@@ -1,0 +1,53 @@
+<header th:fragment="header" class="mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" th:href="@{/pacientes/list}">
+                <i class="bi bi-heart-pulse-fill me-2 fs-4 text-warning"></i>
+                <span>Consultório Vida</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Alternar navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Pacientes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-people me-1"></i> Pacientes
+                        </a>
+                        <ul class="dropdown-menu shadow-sm">
+                            <li><a class="dropdown-item" th:href="@{/pacientes/list}"><i class="bi bi-list-ul me-2 text-primary"></i>Lista de Pacientes</a></li>
+                            <li><a class="dropdown-item" th:href="@{/pacientes/form}"><i class="bi bi-person-plus me-2 text-success"></i>Novo Paciente</a></li>
+                        </ul>
+                    </li>
+                    <!-- Médicos -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-badge me-1"></i> Médicos
+                        </a>
+                        <ul class="dropdown-menu shadow-sm">
+                            <li><a class="dropdown-item" th:href="@{/medicos/list}"><i class="bi bi-list-ul me-2 text-primary"></i>Lista de Médicos</a></li>
+                            <li><a class="dropdown-item" th:href="@{/medicos/form}"><i class="bi bi-person-plus me-2 text-success"></i>Novo Médico</a></li>
+                        </ul>
+                    </li>
+                    <!-- Consultas -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-calendar2-week me-1"></i> Consultas
+                        </a>
+                        <ul class="dropdown-menu shadow-sm">
+                            <li><a class="dropdown-item" th:href="@{/consultas/list}"><i class="bi bi-calendar-check me-2 text-primary"></i>Lista de Consultas</a></li>
+                            <li><a class="dropdown-item" th:href="@{/consultas/form}"><i class="bi bi-calendar-plus me-2 text-success"></i>Nova Consulta</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a class="btn btn-outline-light btn-sm fw-semibold" th:href="@{/consultas/form}">
+                        <i class="bi bi-plus-circle me-1"></i> Nova Consulta
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

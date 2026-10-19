@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::head}, ~{::main})}">
+<head th:replace="~{fragments/head :: head(~{::title})}">
+    <title>Lista de Médicos - Consultório Vida</title>
+</head>
+<body>
+<main class="container my-4 flex-grow-1">
+
+    <!-- Mensagens Flash de Notificação -->
+    <div th:if="${mensagem != null}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${mensagem}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+
+    <div th:if="${mensagemErro != null}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${mensagemErro}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="h3 mb-1 text-primary fw-bold">
+                <i class="bi bi-person-badge-fill me-2"></i>Lista de Médicos
+            </h2>
+            <p class="text-muted small mb-0">Gerencie o corpo clínico do consultório</p>
+        </div>
+        <a th:href="@{/medicos/form}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-person-plus-fill me-1"></i> Novo Médico
+        </a>
+    </div>
+
+    <!-- Barra de Filtro / Consulta com Validação -->
+    <div class="card shadow-sm border-0 mb-4 bg-white">
+        <div class="card-body py-3">
+            <form th:action="@{/medicos/list}" method="get" class="row g-2 align-items-center">
+                <div class="col-md-9 col-sm-8">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                        <input type="text" name="busca" class="form-control"
+                               placeholder="Filtrar por nome, CRM ou CPF..."
+                               th:value="${busca}" maxlength="50">
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-grow-1">
+                        <i class="bi bi-funnel me-1"></i> Filtrar
+                    </button>
+                    <a th:if="${busca != null and !busca.empty}" th:href="@{/medicos/list}" class="btn btn-outline-secondary" title="Limpar Filtro">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-primary">
+                    <tr>
+                        <th class="ps-3">ID</th>
+                        <th>Nome</th>
+                        <th>CRM</th>
+                        <th>CPF</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th class="text-center">Histórico</th>
+                        <th class="text-center pe-3">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="m : ${medicos}">
+                        <td class="ps-3 fw-semibold text-secondary" th:text="${m.id}"></td>
+                        <td class="fw-bold text-dark" th:text="${m.nome}"></td>
+                        <td>
+                            <span class="badge bg-secondary" th:text="'CRM: ' + ${m.crm}"></span>
+                        </td>
+                        <td th:text="${m.cpf}"></td>
+                        <td th:text="${m.email}"></td>
+                        <td th:text="${m.telefone}"></td>
+                        <td class="text-center">
+                            <a class="btn btn-outline-info btn-sm" th:href="@{/medicos/historico/{id}(id=${m.id})}" title="Ver Histórico de Consultas">
+                                <i class="bi bi-clock-history me-1"></i> Ver Histórico
+                            </a>
+                        </td>
+                        <td class="text-center pe-3">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-outline-warning" th:href="@{/medicos/edit/{id}(id=${m.id})}" title="Editar Médico">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a class="btn btn-outline-danger" th:href="@{/medicos/remove/{id}(id=${m.id})}"
+                                   onclick="return window.confirm('Tem certeza que deseja excluir este médico?')" title="Excluir Médico">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(medicos)}">
+                        <td colspan="8" class="text-center py-4 text-muted">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            Nenhum médico encontrado.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

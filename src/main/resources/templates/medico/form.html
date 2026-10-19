@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::head}, ~{::main})}">
+<head th:replace="~{fragments/head :: head(~{::title})}">
+    <title th:text="${medico.id == null} ? 'Cadastrar Médico - Consultório Vida' : 'Editar Médico - Consultório Vida'">Médico</title>
+</head>
+<body>
+<main class="container my-4 flex-grow-1">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="card-title mb-0 fs-5 fw-bold">
+                        <i class="bi bi-person-fill-gear me-2"></i>
+                        <span th:text="${medico.id == null} ? 'Cadastrar Novo Médico' : 'Editar Médico'"></span>
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <form th:action="${medico.id == null} ? @{/medicos/save} : @{/medicos/update}"
+                          th:object="${medico}" method="post" novalidate>
+
+                        <!-- Resumo geral de erros de validação dentro do form -->
+                        <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+                                <strong class="fs-6">Atenção! Por favor, corrija os erros abaixo:</strong>
+                            </div>
+                            <ul class="mb-0 ps-3">
+                                <li th:each="erro : ${#fields.detailedErrors()}" th:text="${erro.message}"></li>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                        </div>
+
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label for="nome" class="form-label fw-semibold">Nome Completo <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="nome" th:field="*{nome}"
+                                           th:errorclass="is-invalid" placeholder="Nome completo do médico">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="crm" class="form-label fw-semibold">CRM <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-award"></i></span>
+                                    <input type="text" class="form-control" id="crm" th:field="*{crm}"
+                                           th:errorclass="is-invalid" placeholder="Ex: 123456">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('crm')}" th:errors="*{crm}"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="cpf" class="form-label fw-semibold">CPF <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-card-heading"></i></span>
+                                    <input type="text" class="form-control" id="cpf" th:field="*{cpf}"
+                                           th:errorclass="is-invalid" placeholder="000.000.000-00">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="telefone" class="form-label fw-semibold">Telefone <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                    <input type="text" class="form-control" id="telefone" th:field="*{telefone}"
+                                           th:errorclass="is-invalid" placeholder="(00) 00000-0000">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="email" class="form-label fw-semibold">E-mail <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" th:field="*{email}"
+                                           th:errorclass="is-invalid" placeholder="medico@consultorio.com">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a th:href="@{/medicos/list}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-1"></i> Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

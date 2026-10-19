@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::head}, ~{::main})}">
+<head th:replace="~{fragments/head :: head(~{::title})}">
+    <title th:text="${consulta.id == null} ? 'Agendar Consulta - Consultório Vida' : 'Editar Consulta - Consultório Vida'">Consulta</title>
+</head>
+<body>
+<main class="container my-4 flex-grow-1">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="card-title mb-0 fs-5 fw-bold">
+                        <i class="bi bi-calendar2-plus me-2"></i>
+                        <span th:text="${consulta.id == null} ? 'Agendar Nova Consulta' : 'Editar Consulta'"></span>
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <form th:action="${consulta.id == null} ? @{/consultas/save} : @{/consultas/update}"
+                          th:object="${consulta}" method="post" novalidate>
+
+                        <!-- Resumo geral de erros de validação dentro do form -->
+                        <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+                                <strong class="fs-6">Atenção! Por favor, corrija os erros abaixo:</strong>
+                            </div>
+                            <ul class="mb-0 ps-3">
+                                <li th:each="erro : ${#fields.detailedErrors()}" th:text="${erro.message}"></li>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                        </div>
+
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label fw-semibold">Data e Hora <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-clock"></i></span>
+                                    <input type="datetime-local" class="form-control" id="date" th:field="*{date}"
+                                           th:errorclass="is-invalid">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="value" class="form-label fw-semibold">Valor da Consulta (R$) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" step="0.01" class="form-control" id="value" th:field="*{value}"
+                                           th:errorclass="is-invalid" placeholder="0.00">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="medico" class="form-label fw-semibold">Médico Responsável <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                    <select class="form-select" id="medico" th:field="*{medico.id}"
+                                            th:classappend="${(#fields.hasErrors('medico') or #fields.hasErrors('medico.id')) ? 'is-invalid' : ''}">
+                                        <option value="">Selecione um médico...</option>
+                                        <option th:each="med : ${medicos}"
+                                                th:value="${med.id}"
+                                                th:text="${med.nome + ' (CRM: ' + med.crm + ')'}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('medico')}" th:errors="*{medico}"></div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('medico.id')}" th:errors="*{medico.id}"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="paciente" class="form-label fw-semibold">Paciente <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <select class="form-select" id="paciente" th:field="*{paciente.id}"
+                                            th:classappend="${(#fields.hasErrors('paciente') or #fields.hasErrors('paciente.id')) ? 'is-invalid' : ''}">
+                                        <option value="">Selecione um paciente...</option>
+                                        <option th:each="pac : ${pacientes}"
+                                                th:value="${pac.id}"
+                                                th:text="${pac.nome + ' (CPF: ' + pac.cpf + ')'}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('paciente')}" th:errors="*{paciente}"></div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('paciente.id')}" th:errors="*{paciente.id}"></div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="observation" class="form-label fw-semibold">Observação</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-chat-left-text"></i></span>
+                                    <input type="text" class="form-control" id="observation" th:field="*{observation}"
+                                           th:errorclass="is-invalid" placeholder="Observação ou motivo da consulta">
+                                </div>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('observation')}" th:errors="*{observation}"></div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a th:href="@{/consultas/list}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-1"></i> Salvar Consulta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>
