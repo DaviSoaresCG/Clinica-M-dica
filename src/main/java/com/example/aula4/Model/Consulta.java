@@ -1,6 +1,7 @@
 package com.example.aula4.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
@@ -85,5 +86,15 @@ public class Consulta implements Serializable {
 
     public void setMedico(Medico medico) {
         this.medico = medico;
+    }
+
+    @AssertTrue(message = "Selecione um médico.")
+    public boolean isMedicoValido() {
+        return medico != null && medico.getId() != null;
+    }
+
+    @AssertTrue(message = "Selecione um paciente.")
+    public boolean isPacienteValido() {
+        return paciente != null && paciente.getId() != null;
     }
 }

@@ -6,20 +6,14 @@
 <body>
 <main class="container my-4 flex-grow-1">
 
-    <!-- Mensagens Flash de Notificação -->
+    <!-- Mensagem de redirecionamento (item 1.7 do material) -->
     <div th:if="${mensagem != null}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i>
+        <i class="bi bi-check-circle me-1"></i>
         <span th:text="${mensagem}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
 
-    <div th:if="${mensagemErro != null}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <span th:text="${mensagemErro}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="h3 mb-1 text-primary fw-bold">
                 <i class="bi bi-people-fill me-2"></i>Lista de Pacientes
@@ -29,30 +23,6 @@
         <a th:href="@{/pacientes/form}" class="btn btn-primary shadow-sm">
             <i class="bi bi-person-plus-fill me-1"></i> Novo Paciente
         </a>
-    </div>
-
-    <!-- Barra de Filtro / Consulta com Validação -->
-    <div class="card shadow-sm border-0 mb-4 bg-white">
-        <div class="card-body py-3">
-            <form th:action="@{/pacientes/list}" method="get" class="row g-2 align-items-center">
-                <div class="col-md-9 col-sm-8">
-                    <div class="input-group">
-                        <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-                        <input type="text" name="busca" class="form-control"
-                               placeholder="Filtrar por nome, CPF ou convênio..."
-                               th:value="${busca}" maxlength="50">
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary flex-grow-1">
-                        <i class="bi bi-funnel me-1"></i> Filtrar
-                    </button>
-                    <a th:if="${busca != null and !busca.empty}" th:href="@{/pacientes/list}" class="btn btn-outline-secondary" title="Limpar Filtro">
-                        <i class="bi bi-x-lg"></i>
-                    </a>
-                </div>
-            </form>
-        </div>
     </div>
 
     <div class="card shadow-sm border-0">
@@ -101,7 +71,7 @@
                     <tr th:if="${#lists.isEmpty(pacientes)}">
                         <td colspan="8" class="text-center py-4 text-muted">
                             <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                            Nenhum paciente encontrado.
+                            Nenhum paciente cadastrado no momento.
                         </td>
                     </tr>
                     </tbody>

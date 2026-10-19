@@ -156,11 +156,25 @@ class Aula4ApplicationTests {
     }
 
     @Test
-    void testIntegridadeExclusaoPacienteComConsultas() throws Exception {
-        // Paciente com ID 3 possui consultas cadastradas no import.sql -> exclusão deve ser bloqueada
-        mockMvc.perform(get("/pacientes/remove/3"))
+    void testPacienteNomeMuitoLongo() throws Exception {
+        // Mais de 100 caracteres no nome (conforme tabela 1.8 do PDF) -> Erro de tamanho do nome
+        String nomeLongo = "A".repeat(101);
+        mockMvc.perform(post("/pacientes/save")
+                        .param("nome", nomeLongo)
+                        .param("cpf", "11122233344")
+                        .param("email", "teste@email.com")
+                        .param("telefone", "63999998888"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("paciente/form"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrors("paciente", "nome"));
+    }
+
+    @Test
+    void testConsultaRemove() throws Exception {
+        mockMvc.perform(get("/consultas/remove/2"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/pacientes/list"))
-                .andExpect(flash().attributeExists("mensagemErro"));
+                .andExpect(redirectedUrl("/consultas/list"))
+                .andExpect(flash().attributeExists("mensagem"));
     }
 }
