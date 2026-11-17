@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{fragments/layout :: layout(~{::head}, ~{::main})}">
+<html th:replace="~{fragments/layout :: layout(~{::head}, ~{::main})}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head :: head(~{::title})}">
     <title>Lista de Consultas - Consultório Vida</title>
 </head>
@@ -37,7 +37,7 @@
                         <th>Médico</th>
                         <th>Paciente</th>
                         <th>Observação</th>
-                        <th class="text-center pe-3">Ações</th>
+                        <th sec:authorize="hasRole('ADMIN')" class="text-center pe-3">Ações</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -63,7 +63,7 @@
                             </span>
                         </td>
                         <td class="text-muted small" th:text="${c.observation != null and !c.observation.empty ? c.observation : '-'}"></td>
-                        <td class="text-center pe-3">
+                        <td sec:authorize="hasRole('ADMIN')" class="text-center pe-3">
                             <div class="btn-group btn-group-sm" role="group">
                                 <a class="btn btn-outline-warning" th:href="@{/consultas/edit/{id}(id=${c.id})}" title="Editar Consulta">
                                     <i class="bi bi-pencil-square"></i>

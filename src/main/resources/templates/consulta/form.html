@@ -60,7 +60,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
                                     <select class="form-select" id="medico" th:field="*{medico.id}"
-                                            th:classappend="${(#fields.hasErrors('medico') or #fields.hasErrors('medico.id')) ? 'is-invalid' : ''}">
+                                            th:classappend="${(#fields.hasErrors('medico') or #fields.hasErrors('medico')) ? 'is-invalid' : ''}">
                                         <option value="">Selecione um médico...</option>
                                         <option th:each="med : ${medicos}"
                                                 th:value="${med.id}"
@@ -69,7 +69,7 @@
                                     </select>
                                 </div>
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('medico')}" th:errors="*{medico}"></div>
-                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('medico.id')}" th:errors="*{medico.id}"></div>
+<!--                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('medico.id')}" th:errors="*{medico.id}"></div>-->
                             </div>
 
                             <div class="col-md-6">
